@@ -43,8 +43,8 @@ namespace NerdDinner.Models
 
         partial void OnValidate(ChangeAction action)
         {
-            if (!IsValid)
-                throw new ApplicationException("Rule violations prevent saving");
+            //if (!IsValid)
+            //    throw new ApplicationException("Rule violations prevent saving");
         }
     }
 
