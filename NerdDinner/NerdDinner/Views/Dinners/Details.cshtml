@@ -1,0 +1,39 @@
+﻿@model NerdDinner.Models.Dinner
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<section class="card">
+
+    <div class="card-header">
+        <h2>@Html.DisplayFor(model => model.Title)</h2>
+    </div>
+    <div class="card-body">
+        <p>
+            <strong>When:</strong>
+            @Html.DisplayFor(model => model.EventDate)
+            <strong>At</strong>
+            @Html.DisplayFor(model => model.EventDate)
+        </p>
+        <p>
+            <strong>Where:</strong>
+            @Html.DisplayFor(model => model.Address)
+            @Html.DisplayFor(model => model.Country)
+        </p>
+        <p>
+            <strong>Description:</strong>
+            @Html.DisplayFor(model => model.Description)
+        </p>
+        <p>
+            <strong>Organizer:</strong>
+            @Html.DisplayFor(model => model.HostedBy)
+            @Html.DisplayFor(model => model.ContactPhone)
+        </p>
+    </div>
+    <div class="card-footer">
+        @Html.ActionLink("Edit", "Edit", new { id = Model.DinnerID }) |
+        @Html.ActionLink("Back to List", "Index")
+    </div>
+
+</section>
