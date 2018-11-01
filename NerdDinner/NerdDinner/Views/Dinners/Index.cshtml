@@ -1,26 +1,28 @@
 ﻿@model IEnumerable<NerdDinner.Models.Dinner>
 
-@{
-    ViewBag.Title = "Index";
-}
+@*   NerdDinner.Helpers.PaginatedList<Dinner>    *@
+
+    @{
+        ViewBag.Title = "Index";
+    }
 
 
-<section class="card">
+    <section class="card">
 
-    <div class="card-header">
-        <h2>Upcoming Events</h2>
-    </div>
-    <div class="card-body">
-        <ul>
-            @foreach (var dinner in Model)
+        <div class="card-header">
+            <h2>Upcoming Events</h2>
+        </div>
+        <div class="card-body">
+            <ul>
+                @foreach (var dinner in Model)
             {
-                <li>@Html.ActionLink(dinner.Title, "Details", new { id=dinner.DinnerID }) on @Html.DisplayFor(modelItem => dinner.EventDate) at @Html.DisplayFor(modelItem => dinner.EventDate)</li>
-            }
-        </ul>
+                    <li>@Html.ActionLink(dinner.Title, "Details", new { id = dinner.DinnerID }) on @Html.DisplayFor(modelItem => dinner.EventDate) at @Html.DisplayFor(modelItem => dinner.EventDate)</li>
+                }
+            </ul>
 
-    </div>
-    <div class="card-footer">
-        @Html.ActionLink("Create New", "Create")
-    </div>
+        </div>
+        <div class="card-footer">
+            @Html.ActionLink("Create New", "Create")
+        </div>
 
-</section>
+    </section>

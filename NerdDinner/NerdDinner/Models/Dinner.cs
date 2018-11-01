@@ -47,6 +47,11 @@ namespace NerdDinner.Models
             //if (!IsValid)
             //    throw new ApplicationException("Rule violations prevent saving");
         }
+
+        public bool IsHostedBy(string userName)
+        {
+            return HostedBy.Equals(userName, StringComparison.InvariantCultureIgnoreCase);
+        }
     }
 
     public class PhoneValidator

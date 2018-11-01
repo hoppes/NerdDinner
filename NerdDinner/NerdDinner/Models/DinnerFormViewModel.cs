@@ -6,12 +6,12 @@ using System.Web.Mvc;
 
 namespace NerdDinner.Models
 {
-    public class DinnerFormViewModel
+    public class DinnerFormViewModel : Dinner
     {
 
         // Properties
-        public Dinner Dinner { get; private set; }
-        public SelectList Countries { get; private set; }
+        public Dinner Dinner { get; set; }
+        public SelectList Countries { get; set; }
 
         // Constructor
         public DinnerFormViewModel(Dinner dinner)

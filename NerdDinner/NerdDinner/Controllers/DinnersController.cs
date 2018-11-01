@@ -14,13 +14,19 @@ namespace NerdDinner.Controllers
 
         //
         // GET: /Dinners/
+        //    /Dinners/[paging]
 
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
 
-            var dinners = dinnerRepository.FindUpcomingDinners().ToList();
+            //var dinners = dinnerRepository.FindUpcomingDinners().ToList();
 
-            return View(dinners);
+            const int pageSize = 3;
+
+            var upcomingDinners = dinnerRepository.FindUpcomingDinners();
+            var paginatedDinners = new PaginatedList<Dinner>(upcomingDinners, page ?? 0, pageSize);
+
+            return View(paginatedDinners);
         }
 
         //
@@ -39,23 +45,29 @@ namespace NerdDinner.Controllers
 
         //
         // GET: /Dinners/Edit/[ID]
-        //[Authorize]
+        [Authorize]
         public ActionResult Edit(int id)
         {
             Dinner dinner = dinnerRepository.GetDinner(id);
 
-            ViewData["Countries"] = new SelectList(PhoneValidator.Countries, dinner.Country);
+            //ViewData["Countries"] = new SelectList(PhoneValidator.Countries, dinner.Country);
 
-            return View(dinner);
+            if (!dinner.IsHostedBy(User.Identity.Name))
+                return View("InvalidOwner");
+
+            return View(new DinnerFormViewModel(dinner));
         }
 
         //
         // POST: /Dinners/Edit/[ID]
-        [AcceptVerbs(HttpVerbs.Post)]
+        [AcceptVerbs(HttpVerbs.Post), Authorize]
         public ActionResult Edit(int id, FormCollection formValues)
         {
 
             Dinner dinner = dinnerRepository.GetDinner(id);
+
+            if (!dinner.IsHostedBy(User.Identity.Name))
+                return View("InvalidOwner");
 
             try
             {
@@ -71,16 +83,18 @@ namespace NerdDinner.Controllers
                 {
                     ModelState.AddModelError(issue.PropertyName, issue.ErrorMessage);
 
-                    ViewData["Countries"] = new SelectList(PhoneValidator.Countries, dinner.Country);
+                    //ViewData["Countries"] = new SelectList(PhoneValidator.Countries, dinner.Country);
                 }
 
-                return View(dinner);
+
+                return View(new DinnerFormViewModel(dinner));
             }     
 
         }
 
         //
         // GET: /Dinners/Create/
+        [Authorize]
         public ActionResult Create() {
 
         Dinner dinner = new Dinner()
@@ -88,13 +102,13 @@ namespace NerdDinner.Controllers
             EventDate = DateTime.Now.AddDays(7)
         };
 
-        return View(dinner);
+            return View(new DinnerFormViewModel(dinner));
 
         }
 
         //
         // POST: /Dinners/Create/
-        [AcceptVerbs(HttpVerbs.Post)]
+        [AcceptVerbs(HttpVerbs.Post), Authorize]
         public ActionResult Create(Dinner dinner)
         {
 
@@ -103,7 +117,11 @@ namespace NerdDinner.Controllers
 
                 try
                 {
-                    dinner.HostedBy = "SomeUser";
+                    dinner.HostedBy = User.Identity.Name;
+
+                    RSVP rsvp = new RSVP();
+                    rsvp.AttendeeName = User.Identity.Name;
+                    dinner.RSVPs.Add(rsvp);
 
                     dinnerRepository.Add(dinner);
                     dinnerRepository.Save();
@@ -117,11 +135,11 @@ namespace NerdDinner.Controllers
                         ModelState.AddModelError(issue.PropertyName, issue.ErrorMessage);
                     }
 
-                    return View(dinner);
+                    return View(new DinnerFormViewModel(dinner));
                 }
             }
 
-            return View(dinner);
+            return View(new DinnerFormViewModel(dinner));
         }
 
 

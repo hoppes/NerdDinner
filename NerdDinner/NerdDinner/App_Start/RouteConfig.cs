@@ -14,10 +14,17 @@ namespace NerdDinner
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name:  "UpcomingDinners",                               // Route name
+                url: "Dinners/Page/{page}",                           // URL with params
+                defaults: new { controller = "Dinners", action = "Index" } // Param defaults
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
         }
     }
 }
