@@ -39,9 +39,12 @@ namespace NerdDinner.Controllers
 
         //
         // GET: /Dinners/Edit/[ID]
+        //[Authorize]
         public ActionResult Edit(int id)
         {
             Dinner dinner = dinnerRepository.GetDinner(id);
+
+            ViewData["Countries"] = new SelectList(PhoneValidator.Countries, dinner.Country);
 
             return View(dinner);
         }
@@ -67,6 +70,8 @@ namespace NerdDinner.Controllers
                 foreach (var issue in dinner.GetRuleViolations())
                 {
                     ModelState.AddModelError(issue.PropertyName, issue.ErrorMessage);
+
+                    ViewData["Countries"] = new SelectList(PhoneValidator.Countries, dinner.Country);
                 }
 
                 return View(dinner);
