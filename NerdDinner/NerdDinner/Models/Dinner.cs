@@ -52,6 +52,11 @@ namespace NerdDinner.Models
         {
             return HostedBy.Equals(userName, StringComparison.InvariantCultureIgnoreCase);
         }
+
+        public bool IsUserRegistered(string userName)
+        {
+            return RSVPs.Any(r => r.AttendeeName.Equals(userName, StringComparison.InvariantCultureIgnoreCase));
+        }
     }
 
     public class PhoneValidator

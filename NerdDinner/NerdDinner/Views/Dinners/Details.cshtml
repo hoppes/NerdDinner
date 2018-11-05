@@ -10,6 +10,23 @@
         <h2>@Html.DisplayFor(model => model.Title)</h2>
     </div>
     <div class="card-body">
+
+        @if (Request.IsAuthenticated)
+        {
+            if ( Model.IsUserRegistered(Context.User.Identity.Name) )
+            {
+                @: You are registered for this event! <br/>
+            }
+            else
+            {
+                @Ajax.ActionLink("RSVP for this event", "Register", "RSVP", new { id = Model.DinnerID }, new AjaxOptions { UpdateTargetId = "rsvpmsg" })
+            }
+        }
+        else
+        {
+            @:<a href="/Account/Login">Login</a> To RSVP for this event. <br />
+        }
+
         <p>
             <strong>When:</strong>
             @Html.DisplayFor(model => model.EventDate)
@@ -37,3 +54,9 @@
     </div>
 
 </section>
+
+@*Cant do this as it is deprecated and doesnt exist anymore
+https://stackoverflow.com/questions/8782697/are-microsoftajax-js-microsoftmvcajax-js-and-microsoftmvcvalidation-js-obsolete
+
+<script src="/Scripts/MicrosoftAjax.js" type="text/javascript"></script>
+<script src="/Scripts/MicrosoftMvcAjax.js" type="text/javascript"></script>*@

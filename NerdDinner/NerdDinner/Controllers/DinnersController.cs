@@ -21,7 +21,7 @@ namespace NerdDinner.Controllers
 
             //var dinners = dinnerRepository.FindUpcomingDinners().ToList();
 
-            const int pageSize = 3;
+            const int pageSize = 5;
 
             var upcomingDinners = dinnerRepository.FindUpcomingDinners();
             var paginatedDinners = new PaginatedList<Dinner>(upcomingDinners, page ?? 0, pageSize);
